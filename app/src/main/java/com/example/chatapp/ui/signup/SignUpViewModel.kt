@@ -3,18 +3,20 @@ package com.example.chatapp.ui.signup
 import android.util.Log
 import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModel
+import com.example.chatapp.database.FireBaseUtils
+import com.example.chatapp.database.models.User
 import com.example.chatapp.ui.base.BaseViewModel
 import com.google.firebase.auth.FirebaseAuth
 
 class SignUpViewModel : BaseViewModel<SignUpNavigator>() {
 
-    val name = ObservableField<String>()
+    val name = ObservableField<String?>()
     var nameError = ObservableField<String?>()
-    val email = ObservableField<String>()
+    val email = ObservableField<String?>()
     var emailError = ObservableField<String?>()
-    val password = ObservableField<String>()
+    val password = ObservableField<String?>()
     var passwordError = ObservableField<String?>()
-    val passwordConfirmation = ObservableField<String>()
+    val passwordConfirmation = ObservableField<String?>()
     var passwordConfirmationError = ObservableField<String?>()
 
     val auth = FirebaseAuth.getInstance()
@@ -28,14 +30,37 @@ class SignUpViewModel : BaseViewModel<SignUpNavigator>() {
             password.get()!!)
             .addOnCompleteListener {task ->
                 if(task.isSuccessful){
-                    navigator?.hideDialog()
-                    navigator?.showMessage("Successful register")
+                   insertuserToDataBase(task.result.user?.uid)
 
                 }else{
                     navigator?.hideDialog()
                     navigator?.showMessage(task.exception!!.localizedMessage)
                 }
             }
+
+    }
+
+    private fun insertuserToDataBase(uid: String?) {
+
+        val user = User(
+            id = uid ,
+            userName = name.get() ,
+            email = email.get()
+        )
+
+        FireBaseUtils().insertUserToDataBase(user)
+            .addOnCompleteListener {
+                navigator?.hideDialog()
+                if(it.isSuccessful){
+                    navigator?.showMessage("Successful registration")
+                    navigator?.goToLogin()
+                }else{
+
+                    navigator?.showMessage(it.exception!!.localizedMessage)
+
+                }
+            }
+
 
     }
 

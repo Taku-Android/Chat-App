@@ -9,8 +9,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.ViewModel
 
-
-
 // in kotlin  if u make inhertance the parent must be open class
 abstract class BaseActivity<VB : ViewDataBinding, VM : ViewModel>
     : AppCompatActivity() , BaseNavigator {

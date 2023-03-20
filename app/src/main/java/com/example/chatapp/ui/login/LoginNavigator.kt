@@ -6,4 +6,6 @@ interface  LoginNavigator : BaseNavigator{
 
     fun goToSignUp()
 
+    fun goToHome()
+
 }

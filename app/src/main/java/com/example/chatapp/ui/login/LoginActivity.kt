@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.chatapp.R
 import com.example.chatapp.databinding.ActivityLoginBinding
 import com.example.chatapp.ui.base.BaseActivity
+import com.example.chatapp.ui.home.HomeActivity
 import com.example.chatapp.ui.signup.SignUpActivity
 
 class LoginActivity :
@@ -35,6 +36,14 @@ class LoginActivity :
     override fun goToSignUp() {
         val i = Intent(this , SignUpActivity::class.java)
         startActivity(i)
+
+    }
+
+    override fun goToHome() {
+
+        val i = Intent(this , HomeActivity::class.java)
+        startActivity(i)
+        finish()
 
     }
 

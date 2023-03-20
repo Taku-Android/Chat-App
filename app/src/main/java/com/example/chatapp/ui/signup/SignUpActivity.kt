@@ -47,4 +47,6 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding , SignUpViewModel>()
     }
 
 
+
+
 }

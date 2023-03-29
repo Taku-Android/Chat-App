@@ -20,13 +20,16 @@ class SplashActivity : AppCompatActivity() {
         setContentView(R.layout.activity_splash)
 
 
+    }
+
+    override fun onStart() {
+        super.onStart()
         Handler().postDelayed(Runnable { //This method will be executed once the timer is over
             // Start your app main activity
             navigate()
             // close this activity
-            finish()
-        }, 2000)
 
+        }, 2000)
     }
 
     private fun navigate() {
@@ -34,26 +37,26 @@ class SplashActivity : AppCompatActivity() {
         if (auth.currentUser == null) {
             val i = Intent(this@SplashActivity, LoginActivity::class.java)
             startActivity(i)
+            return
         }
-
         FireBaseUtils()
             .getUserFromDataBase(auth.currentUser!!.uid)
             .addOnCompleteListener {
-                if (it.isSuccessful){
-                    val user = it.result.toObject(User::class.java)
-                    UserProvider.user = user
-                    val i = Intent(this@SplashActivity, HomeActivity::class.java)
-                    startActivity(i)
-                }else{
+                if (!it.isSuccessful) {
                     val i = Intent(this@SplashActivity, LoginActivity::class.java)
                     startActivity(i)
+                    finish()
                     return@addOnCompleteListener
+
                 }
+                val user = it.result.toObject(User::class.java)
+                UserProvider.user = user
+                val i = Intent(this@SplashActivity, HomeActivity::class.java)
+                startActivity(i)
+                finish()
+
 
             }
-
-
-
 
 
     }

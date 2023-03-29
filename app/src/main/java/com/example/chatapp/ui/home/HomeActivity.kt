@@ -16,7 +16,9 @@ class HomeActivity : BaseActivity<ActivityHomeBinding , HomeViewModel>() , HomeN
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+
         viewModel.navigator = this
+        viewBinding.vm = viewModel
 
     }
 

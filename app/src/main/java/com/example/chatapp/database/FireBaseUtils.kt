@@ -6,6 +6,7 @@ import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.QuerySnapshot
 
 class FireBaseUtils {
 
@@ -45,6 +46,13 @@ class FireBaseUtils {
         room.id = docRef.id
 
         return  docRef.set(room)
+
+
+    }
+
+    fun getRooms():Task<QuerySnapshot>{
+
+        return  getRoomCollection().get()
 
 
     }

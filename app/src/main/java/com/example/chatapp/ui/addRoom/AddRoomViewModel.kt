@@ -19,7 +19,7 @@ import com.example.chatapp.ui.isValidEmail
 
 class AddRoomViewModel : BaseViewModel<AddRoomNavigator>() {
 
-    var image:String? = null
+    var image :String? = null
     val title = ObservableField<String>()
     var titleError = ObservableField<String?>()
     val description = ObservableField<String>()
@@ -44,12 +44,20 @@ class AddRoomViewModel : BaseViewModel<AddRoomNavigator>() {
             .addOnCompleteListener {
                 navigator?.hideDialog()
                 if (it.isSuccessful){
-                    navigator?.gotToHome()
+                    navigator?.showMessage("room added successfully")
+
                 }else{
                     navigator?.showMessage(it.exception!!.localizedMessage)
+                    return@addOnCompleteListener
                 }
             }
 
+    }
+
+    fun goBack(){
+        title.set("")
+        description.set("")
+        navigator?.gotToHome()
     }
 
 
@@ -67,6 +75,13 @@ class AddRoomViewModel : BaseViewModel<AddRoomNavigator>() {
             isValid = false
         } else {
             descriptionError.set(null)
+            isValid = true
+        }
+        if(image.isNullOrBlank()){
+            navigator?.showMessage("enter image please")
+            isValid = false
+        }else {
+
             isValid = true
         }
 

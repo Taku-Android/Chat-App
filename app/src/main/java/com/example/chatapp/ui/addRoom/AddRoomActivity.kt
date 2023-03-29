@@ -11,6 +11,7 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Base64
 import android.view.View
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -19,6 +20,7 @@ import androidx.lifecycle.get
 import com.example.chatapp.R
 import com.example.chatapp.databinding.ActivityAddRoomBinding
 import com.example.chatapp.ui.base.BaseActivity
+import java.io.ByteArrayOutputStream
 import java.security.Provider
 
 class AddRoomActivity : BaseActivity<ActivityAddRoomBinding, AddRoomViewModel>() , AddRoomNavigator {
@@ -32,9 +34,7 @@ class AddRoomActivity : BaseActivity<ActivityAddRoomBinding, AddRoomViewModel>()
         return ViewModelProvider(this).get(AddRoomViewModel::class.java)
     }
 
-    //get photo from device
-    var pickedPhoto : Uri? = null
-    var pickedBitmap : Bitmap? = null
+
     val PICK_IMAGE_REQUEST = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,6 +42,7 @@ class AddRoomActivity : BaseActivity<ActivityAddRoomBinding, AddRoomViewModel>()
 
         viewModel.navigator = this
         viewBinding.vm = viewModel
+
 
 
     }
@@ -60,9 +61,22 @@ class AddRoomActivity : BaseActivity<ActivityAddRoomBinding, AddRoomViewModel>()
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.data != null) {
             val imageUri = data.data // get the image Uri from the Intent
             val inputStream = contentResolver.openInputStream(imageUri!!) // get an InputStream from the Uri
-            val bitmap = BitmapFactory.decodeStream(inputStream) // decode the InputStream into a Bitmap
+           val bitmap = BitmapFactory.decodeStream(inputStream) // decode the InputStream into a Bitmap
             viewBinding.content.roomImage.setImageBitmap(bitmap) // set the Bitmap to the ImageView
+            viewModel.image = bitmapToString(bitmap)
+
         }
+    }
+
+    override fun gotToHome() {
+        finish()
+    }
+
+    fun bitmapToString(bitmap: Bitmap): String {
+        val byteArrayOutputStream = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream)
+        val byteArray = byteArrayOutputStream.toByteArray()
+        return Base64.encodeToString(byteArray, Base64.DEFAULT)
     }
 
 

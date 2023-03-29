@@ -7,4 +7,6 @@ import com.example.chatapp.ui.base.BaseNavigator
 interface AddRoomNavigator : BaseNavigator {
 
 
+    fun gotToHome()
+
 }

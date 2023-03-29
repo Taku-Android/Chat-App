@@ -3,6 +3,7 @@ package com.example.chatapp.ui.home
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
 import com.example.chatapp.R
@@ -13,12 +14,41 @@ import com.example.chatapp.ui.login.LoginActivity
 
 class HomeActivity : BaseActivity<ActivityHomeBinding , HomeViewModel>() , HomeNavigator {
 
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
 
         viewModel.navigator = this
         viewBinding.vm = viewModel
+        initializeAdapter()
+        subscribeToLiveData()
+        viewModel.loadRooms()
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.loadRooms()
+
+    }
+
+
+
+    private fun subscribeToLiveData() {
+
+        viewModel.roomsLiveData.observe(this){
+            adapter.bindList(it)
+        }
+
+    }
+
+
+    val adapter = RoomAdapter()
+    private fun initializeAdapter() {
+
+        viewBinding.content.roomsRv.adapter = adapter
 
     }
 

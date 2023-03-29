@@ -1,5 +1,6 @@
 package com.example.chatapp.ui.addRoom
 
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -19,34 +20,37 @@ import com.example.chatapp.ui.isValidEmail
 
 class AddRoomViewModel : BaseViewModel<AddRoomNavigator>() {
 
-    var image :String? = null
+    var image: String? = null
     val title = ObservableField<String>()
     var titleError = ObservableField<String?>()
     val description = ObservableField<String>()
     var descriptionError = ObservableField<String?>()
 
 
-
-
-    fun createRoom(){
+    fun createRoom() {
         if (!validForm()) return
 
         val room = Room(
-            title = title.get() ,
-            description = description.get() ,
+            title = title.get(),
+            description = description.get(),
             createdBy = UserProvider.user?.userName,
-            image = image ,
-            )
+            image = image,
+        )
 
         navigator?.showLoading("Loading...")
         FireBaseUtils()
             .insertRoom(room)
             .addOnCompleteListener {
                 navigator?.hideDialog()
-                if (it.isSuccessful){
-                    navigator?.showMessage("room added successfully")
+                if (it.isSuccessful) {
+                    navigator?.showMessage(
+                        "room added successfully",
+                        posActionTitle = "ok",
+                        posAction = {
+                            goBack()
+                        })
 
-                }else{
+                } else {
                     navigator?.showMessage(it.exception!!.localizedMessage)
                     return@addOnCompleteListener
                 }
@@ -54,7 +58,7 @@ class AddRoomViewModel : BaseViewModel<AddRoomNavigator>() {
 
     }
 
-    fun goBack(){
+    fun goBack() {
         title.set("")
         description.set("")
         navigator?.gotToHome()
@@ -77,21 +81,16 @@ class AddRoomViewModel : BaseViewModel<AddRoomNavigator>() {
             descriptionError.set(null)
             isValid = true
         }
-        if(image.isNullOrBlank()){
+        if (image.isNullOrBlank()) {
             navigator?.showMessage("enter image please")
             isValid = false
-        }else {
+        } else {
 
             isValid = true
         }
 
         return isValid
     }
-
-
-
-
-
 
 
 }

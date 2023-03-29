@@ -1,6 +1,7 @@
 package com.example.chatapp.ui.base
 
 import android.app.ProgressDialog
+import android.content.DialogInterface
 import android.os.Bundle
 import android.os.PersistableBundle
 import androidx.appcompat.app.AlertDialog
@@ -49,13 +50,31 @@ abstract class BaseActivity<VB : ViewDataBinding, VM : ViewModel>
         progressDialog = null
     }
 
-    override fun showMessage(message: String) {
+    override fun showMessage(
+        message: String,
+        posActionTitle: String? ,
+        posAction: OnDialogeClickListener?,
+        negActionTitle: String?,
+        negAction: OnDialogeClickListener?
+    ) {
 
-        alertDialog = AlertDialog.Builder(this)
+        val builder = AlertDialog.Builder(this)
             .setMessage(message)
-            .setPositiveButton("ok") { dialogInterface, i ->
+           if (posActionTitle != null){
+               builder.setPositiveButton(posActionTitle ){
+                    dialogInterface , i ->
+                   posAction?.onClick()
+                   dialogInterface.dismiss()
+               }.show()
+           }
+        if (negActionTitle != null){
+            builder.setNegativeButton(negActionTitle ){
+                    dialogInterface , i ->
+                negAction?.onClick()
                 dialogInterface.dismiss()
             }.show()
+        }
+
 
     }
 
@@ -67,7 +86,14 @@ interface BaseNavigator {
 
     fun hideDialog()
 
-    fun showMessage(message: String)
+    fun showMessage(message: String ,
+                    posActionTitle:String? = null ,
+                    posAction:OnDialogeClickListener? = null ,
+                    negActionTitle:String? = null ,
+                    negAction:OnDialogeClickListener? = null
+
+
+    )
 
 
 }

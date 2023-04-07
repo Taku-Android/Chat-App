@@ -7,9 +7,11 @@ import android.util.Log
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
 import com.example.chatapp.R
+import com.example.chatapp.database.models.Room
 import com.example.chatapp.databinding.ActivityHomeBinding
 import com.example.chatapp.ui.addRoom.AddRoomActivity
 import com.example.chatapp.ui.base.BaseActivity
+import com.example.chatapp.ui.chat.ChatRoomActivity
 import com.example.chatapp.ui.login.LoginActivity
 
 class HomeActivity : BaseActivity<ActivityHomeBinding , HomeViewModel>() , HomeNavigator {
@@ -49,6 +51,14 @@ class HomeActivity : BaseActivity<ActivityHomeBinding , HomeViewModel>() , HomeN
     private fun initializeAdapter() {
 
         viewBinding.content.roomsRv.adapter = adapter
+        adapter.onItemClickListener = object : RoomAdapter.OnItemClickListener{
+            override fun onItemClick(postion: Int, item: Room) {
+                val i = Intent(this@HomeActivity , ChatRoomActivity::class.java)
+                i.putExtra("room" , item)
+                startActivity(i)
+            }
+
+        }
 
     }
 

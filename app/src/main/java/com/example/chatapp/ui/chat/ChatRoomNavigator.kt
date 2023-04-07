@@ -5,6 +5,6 @@ import com.example.chatapp.ui.base.OnDialogeClickListener
 
 interface ChatRoomNavigator:BaseNavigator {
 
-
+    fun closeChat()
 
 }

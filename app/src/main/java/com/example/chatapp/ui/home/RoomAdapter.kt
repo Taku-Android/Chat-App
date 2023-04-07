@@ -46,12 +46,16 @@ class RoomAdapter(var items:List<Room>? = null): RecyclerView.Adapter<RoomAdapte
                 roomImg.setImageBitmap(stringToBitmap(item.image))
                 roomTitle.text = item.title
                 roomDesc.text = item.description
+
+            }
+        }
+        onItemClickListener?.let {clicklistener ->
+            holder.binding.root.setOnClickListener {
+                clicklistener.onItemClick(position , item)
             }
         }
 
-        onItemClickListener?.let {
-            it.onItemClick(position , item)
-        }
+
 
     }
     fun stringToBitmap(imageString: String?): Bitmap? {

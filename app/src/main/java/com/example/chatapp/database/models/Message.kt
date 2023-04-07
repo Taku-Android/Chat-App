@@ -9,7 +9,7 @@ data class Message (
     var senderId:String? = null ,
     var senderName:String? = null ,
     var dateTime:Timestamp? = null ,
-    var recieved : Boolean = false ,
-    var read: Boolean = false
+  //  var recieved : Boolean = false ,
+   // var read: Boolean = false
 
 )

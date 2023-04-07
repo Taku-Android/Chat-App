@@ -28,6 +28,7 @@ class HomeActivity : BaseActivity<ActivityHomeBinding , HomeViewModel>() , HomeN
         subscribeToLiveData()
         viewModel.loadRooms()
 
+
     }
 
     override fun onResume() {
@@ -53,9 +54,9 @@ class HomeActivity : BaseActivity<ActivityHomeBinding , HomeViewModel>() , HomeN
         viewBinding.content.roomsRv.adapter = adapter
         adapter.onItemClickListener = object : RoomAdapter.OnItemClickListener{
             override fun onItemClick(postion: Int, item: Room) {
-                val i = Intent(this@HomeActivity , ChatRoomActivity::class.java)
-                i.putExtra("room" , item)
-                startActivity(i)
+                val chatIntent = Intent(this@HomeActivity , ChatRoomActivity::class.java)
+                chatIntent.putExtra("room" , item)
+                startActivity(chatIntent)
             }
 
         }

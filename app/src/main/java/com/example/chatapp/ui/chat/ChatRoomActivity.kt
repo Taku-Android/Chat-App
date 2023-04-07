@@ -1,5 +1,6 @@
 package com.example.chatapp.ui.chat
 
+import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -8,6 +9,7 @@ import com.example.chatapp.R
 import com.example.chatapp.database.models.Room
 import com.example.chatapp.databinding.ActivityChatRoomBinding
 import com.example.chatapp.ui.base.BaseActivity
+import com.example.chatapp.ui.home.HomeActivity
 import com.example.chatapp.ui.home.HomeViewModel
 import java.security.Provider
 
@@ -27,10 +29,12 @@ class ChatRoomActivity : BaseActivity<ActivityChatRoomBinding, ChatRoomViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewModel.navigator = this
-        viewBinding.vm = viewModel
 
+        viewBinding.vm = viewModel
+        viewModel.navigator = this
         initializeRoom()
+
+        viewModel.room = room
 
 
 
@@ -42,6 +46,12 @@ class ChatRoomActivity : BaseActivity<ActivityChatRoomBinding, ChatRoomViewModel
         }else{
             intent.getParcelableExtra("room")
         }
+        viewModel.room = room
+        viewBinding.invalidateAll()
+    }
+
+    override fun closeChat() {
+        finish()
     }
 
 

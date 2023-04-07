@@ -1,5 +1,6 @@
 package com.example.chatapp.database
 
+import com.example.chatapp.database.models.Message
 import com.example.chatapp.database.models.Room
 import com.example.chatapp.database.models.User
 import com.google.android.gms.tasks.Task
@@ -54,6 +55,23 @@ class FireBaseUtils {
 
         return  getRoomCollection().get()
 
+
+    }
+
+    fun sendMessage(message:Message):Task<Void>{
+        // get the room id u press on
+        val roomRef = getRoomCollection()
+            .document(message.roomId!!)
+        // make new collection inside the room u press
+        val messages = roomRef.collection("messages")
+
+
+        val messageDoc = messages.document()
+
+        // give the message id to the document id
+        message.id = messageDoc.id
+
+        return messageDoc.set(message)
 
     }
 
